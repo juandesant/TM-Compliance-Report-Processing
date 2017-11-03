@@ -1,5 +1,5 @@
-L1 Mapping to L2,,,,,
-#,Id,Text,Compliance Type,Compliance,L2 Requirement
+#L1 Mapping to L2,,,,,
+RowNr,L1ReqId,Text,ComplianceType,ComplianceStatement,L2Requirements
 1,SKA1-SYS_REQ-2127,"The SKA1_Mid and SKA1_Low, when commanded, shall form subarrays that can be configured and operated independently of each other.",Derived to L2,comply as per derived L2 requirements,"TM_REQ_278
 The TM, when in Automatic Execution Mode, shall automatically define and configure a Sub-array, based on the selection of Dishes or LFAA Logical Stations as specified in the Scheduling Block parameters, within the constraints of availability of Dishes and LFAA Field Nodes or LFAA antennas.
 TM_REQ_178
