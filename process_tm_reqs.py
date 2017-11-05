@@ -20,8 +20,8 @@ def split_reqs(req_text="", cr='\n', prefix=TM_REQ_PREFIX):
     for req in req_text.split(prefix):
         if len(req)==0:
             continue
-        split_line = req.split(cr)
-        tm_req_nr = prefix+split_line[0]
+        split_line  = req.split(cr)
+        tm_req_nr   = prefix+split_line[0]
         tm_req_text = cr.join(split_line[1:])
         splitL2s.append({'req_nr': tm_req_nr, 'req_text': tm_req_text})
     return splitL2s
