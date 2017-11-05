@@ -1,10 +1,12 @@
 import pandas as pd
 import numpy as np
 from pprint import pprint
-file_name_in = "L1 Mapping to L2 -  2017-10-06.xlsx - Report"
-file_name_out = "L1 Mapping to L2 -  2017-10-06.xlsx - Report.processed"
-file_extension = ".csv"
+import csv
 
+file_name_in       = "L1 Mapping to L2 -  2017-10-06.xlsx - Report"
+file_name_out      = file_name_in+".processed"
+file_extension     = ".csv"
+file_extension_out = ".tst"
 tm_reqs = pd.read_csv(file_name_in+file_extension, comment='#')
 
 TM_REQ_PREFIX="TM_REQ_"
