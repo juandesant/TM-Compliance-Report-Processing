@@ -7,7 +7,7 @@ file_name_in       = "L1 Mapping to L2 -  2017-10-06.xlsx - Report"
 file_name_out      = file_name_in+".processed"
 file_extension     = ".csv"
 file_extension_out = ".tst"
-tm_reqs = pd.read_csv(file_name_in+file_extension, comment='#')
+l1s_to_tm_l2s = pd.read_csv(file_name_in+file_extension, comment='#')
 
 TM_REQ_PREFIX="TM_REQ_"
 
@@ -26,16 +26,16 @@ def split_reqs(req_text="", cr='\n', prefix=TM_REQ_PREFIX):
         splitL2s.append({'req_nr': tm_req_nr, 'req_text': tm_req_text})
     return splitL2s
 
-l2values = pd.Series(tm_reqs.L2Requirements).values
+l2values = pd.Series(l1s_to_tm_l2s.L2Requirements).values
 
 newL2values = []
 for i in l2values:
     newL2values.append(split_reqs(i))
 
-tm_reqs = tm_reqs.assign(L2Dict=pd.Series(newL2values))
+l1s_to_tm_l2s = l1s_to_tm_l2s.assign(L2Dict=pd.Series(newL2values))
 
-tm_not_traced_l1s=tm_reqs[pd.Series(map(lambda x: type(x), tm_reqs['L2Dict'])) == type(np.nan)]
-tm_traced_l1s=tm_reqs[pd.Series(map(lambda x: type(x), tm_reqs['L2Dict'])) != type(np.nan)]
+tm_not_traced_l1s=l1s_to_tm_l2s[pd.Series(map(lambda x: type(x), l1s_to_tm_l2s['L2Dict'])) == type(np.nan)]
+tm_traced_l1s=l1s_to_tm_l2s[pd.Series(map(lambda x: type(x), l1s_to_tm_l2s['L2Dict'])) != type(np.nan)]
 
 # Write non-traced L1s first
 with open(file_name_out+file_extension_out, "w") as csv_file:
