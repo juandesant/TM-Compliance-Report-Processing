@@ -34,25 +34,26 @@ for i in l2values:
 
 l1s_to_tm_l2s = l1s_to_tm_l2s.assign(L2Dict=pd.Series(newL2values))
 
-tm_not_traced_l1s=l1s_to_tm_l2s[pd.Series(map(lambda x: type(x), l1s_to_tm_l2s['L2Dict'])) == type(np.nan)]
-tm_traced_l1s=l1s_to_tm_l2s[pd.Series(map(lambda x: type(x), l1s_to_tm_l2s['L2Dict'])) != type(np.nan)]
-
-# Write non-traced L1s first
+# Write L1s 
 with open(file_name_out+file_extension_out, "w") as csv_file:
-    csv_writer = csv.writer(csv_file)
-    csv_writer.writerow(["RowNr","L1ReqId","Text","ComplianceType","ComplianceStatement","L2ReqId","L2ReqText"])
-    nr_not_traced_l1s = len(tm_not_traced_l1s)
-    for i in range(0,nr_not_traced_l1s):
-        row = tm_not_traced_l1s.iloc[i]
-        l1_tuple = row['RowNr'], row['L1ReqId'], row['Text'], row['ComplianceType'], row['ComplianceStatement'], None, None
-        csv_writer.writerow(l1_tuple)
-    
-    # Write traced L1s later, one row per tracing
-    nr_traced_l1s = len(tm_traced_l1s)
-    for i in range(0,nr_traced_l1s):
-        row = tm_traced_l1s.iloc[i]
-        nr_traced_l2s = len(row['L2Dict'])
-        for i in range(0,nr_traced_l2s):
-            l1_tuple = row['RowNr'], row['L1ReqId'], row['Text'], row['ComplianceType'], row['ComplianceStatement'],  row['L2Dict'][i]['req_nr'], row['L2Dict'][i]['req_text']
+    csv_writer = csv.writer(csv_file, delimiter="\t")
+    csv_writer.writerow(
+        ["RowNr",
+         "L1ReqId",
+         "Text",
+         "ComplianceType",
+         "ComplianceStatement",
+         "L2ReqId",
+         "L2ReqText"]
+    )
+    nr_l1s = len(l1s_to_tm_l2s)
+    for i in range(0, nr_l1s):
+        row = l1s_to_tm_l2s.iloc[i]
+        if type(row['L2Dict']) == type(list()):
+            nr_traced_l2s = len(row['L2Dict'])
+            for i in range(0,nr_traced_l2s):
+                l1_tuple = row['RowNr'], row['L1ReqId'], row['Text'], row['ComplianceType'], row['ComplianceStatement'], row['L2Dict'][i]['req_nr'], row['L2Dict'][i]['req_text']
+                csv_writer.writerow(l1_tuple)
+        else:
+            l1_tuple = row['RowNr'], row['L1ReqId'], row['Text'], row['ComplianceType'], row['ComplianceStatement'], None, None
             csv_writer.writerow(l1_tuple)
-    csv_writer
